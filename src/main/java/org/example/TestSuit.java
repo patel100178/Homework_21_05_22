@@ -77,47 +77,6 @@ public class TestSuit {
         Assert.assertEquals(actualMassage, expectedMassage, "Registration not successful");
     }
 
-    @Test
-    public void userShouldAbleAddToCartProduct() {
-        //click on a computer
-        clickElement(By.partialLinkText("Computers"));
-
-        //click on Desktop
-        clickElement(By.partialLinkText("Desktops"));
-
-        //click on Add to cart button
-        clickElement(By.xpath("//button[contains(@onclick,'/addproducttocart/catalog/1/1/1')]"));
-
-        // select from processor dropdown
-        selectDropdownValue(By.xpath("//select[@name=\"product_attribute_1\"]"), "1");
-
-        // select RAM
-        selectDropdownValue(By.xpath("//select[@name=\"product_attribute_2\"]"), "3");
-
-        // click on HDD radioButton
-        clickElement(By.xpath("//input[@name=\"product_attribute_3\"and@id=\"product_attribute_3_6\"]"));
-
-        //click on OS radiobutton
-        clickElement(By.xpath("//input[@id=\"product_attribute_4_9\"and@name =\"product_attribute_4\"]"));
-
-        // select  software checkbox all
-        clickElement(By.xpath("//*[@id=\"product_attribute_5_10\"]"));
-        clickElement(By.xpath("//*[@id=\"product_attribute_5_11\"]"));
-        clickElement(By.xpath("//*[@id=\"product_attribute_5_12\"]"));
-
-        // click on  Add to cart button
-        clickElement(By.xpath("//*[@id=\"add-to-cart-button-1\"]"));
-
-        // click on shopping cart button
-        clickElement(By.xpath("//*[@id=\"topcartlink\"]/a/span[1]"));
-
-        //Assertion to verify the shopping cart
-        assertVerification("Shopping cart",By.linkText("Shopping cart"),"Invalid page");
-
-        // Assertion to verify the correct product in the cart
-        assertVerification("Build your own computer",By.linkText("Build your own computer"),"This is not correct product");
-
-    }
 
     @Test
     public void registeredUserShouldBeAbleToReferAFriend() {
@@ -185,9 +144,56 @@ public class TestSuit {
 
         //Click on Send Email
         clickElement(By.xpath("//button[@name=\"send-email\"]"));
-        Assert.assertEquals(actualMassage, expectedMassage, "Your message has been sent.");
+        Assert.assertEquals(actualMassage,expectedMassage, "Your message has been not sent.");
 
     }
+    @Test
+    public void userShouldAbleAddToCartProduct() {
+        //click on a computer
+        clickElement(By.xpath("//ul[1]/li/a[@href=\"/computers\"]"));
+
+        //click on Desktop
+        clickElement(By.xpath("//div[3]//a[@href=\"/desktops\"]"));
+
+        //click on Add to cart button
+        clickElement(By.xpath("//button[contains(@onclick,'/addproducttocart/catalog/1/1/1')]"));
+
+        // select from processor dropdown
+        selectDropdownValue(By.xpath("//select[@name=\"product_attribute_1\"]"), "1");
+
+        // select RAM
+        selectDropdownValue(By.xpath("//select[@name=\"product_attribute_2\"]"), "3");
+
+        // click on HDD radioButton
+        clickElement(By.xpath("//input[@name=\"product_attribute_3\"and@id=\"product_attribute_3_6\"]"));
+
+        //click on OS radiobutton
+        clickElement(By.xpath("//input[@id=\"product_attribute_4_9\"and@name =\"product_attribute_4\"]"));
+
+        // select  software checkbox all
+        clickElement(By.xpath("//*[@id=\"product_attribute_5_10\"]"));
+        clickElement(By.xpath("//*[@id=\"product_attribute_5_11\"]"));
+        clickElement(By.xpath("//*[@id=\"product_attribute_5_12\"]"));
+
+        // click on  Add to cart button
+        clickElement(By.xpath("//button[@id=\"add-to-cart-button-1\"]"));
+
+        // click on shopping cart button
+        clickElement(By.xpath("//span[@class=\"cart-label\"]"));
+
+        //Assertion to verify the shopping cart
+        //String expectedResult = "Shopping cart (1)";
+        //String actualResult = getTextFromElement(By.partialLinkText("Shopping cart"));
+        //Assert.assertEquals(actualResult,expectedResult,"Invalid page");
+        assertVerification("Shopping cart","Invalid page",By.partialLinkText("Shopping cart"));
+
+        // Assertion to verify the correct product in the cart
+        //assertVerification("Build your own computer","This is not correct product",By.partialLinkText("Build your own computer"));
+        String expectedResult1 = "Build your own computer";
+        String actualResult1 = getTextFromElement(By.partialLinkText("Build your own computer"));
+        Assert.assertEquals(expectedResult1,actualResult1,"Invalid page");
+    }
+
 
     @Test
     public void userShouldAbleToSeeProductCurrencyInEuro() {
@@ -341,10 +347,10 @@ public class TestSuit {
         wait.until(ExpectedConditions.alertIsPresent());
     }
 
-    public static void assertVerification(String expected, By by,String message) {
+    public static void assertVerification(String expected, String message,By by) {
         String expectedResult = driver.findElement(by).getText();
         String actualResult = expected;
-        Assert.assertEquals(expectedResult, actualResult, message);
+        Assert.assertEquals(expectedResult, message, actualResult);
 
     }
 
